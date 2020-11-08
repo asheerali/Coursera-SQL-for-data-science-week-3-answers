@@ -1,0 +1,59 @@
+1. 
+Using a subquery, find the names of all the tracks for the album "Californication".
+
+Select name, Albumid
+From Tracks
+Where Albumid = (Select Albumid from Albums
+Where title = 'Californication')
+
+2.
+Find the total number of invoices for each customer along with the customer's full name, city and email.
+
+ Select FirstName, LastName, City, Email, Customerid, Count(*) 
+ From Customers 
+ Where Customerid IN (Select Customerid From Invoices
+ Where Customers.Customerid = Invoices.Customerid)
+ Group by Email
+ Having FirstName = 'František'
+ 
+ 3.
+ Retrieve the track name, album, artistID, and trackID for all the albums.
+ What is the song title of trackID 12 from the "For Those About to Rock We Salute You" album? Enter the answer below.
+
+Select Name, title, ArtistId, TrackId
+From Albums AS al 
+Left Join Tracks AS tr ON  tr.AlbumId = al.AlbumId 
+Group by Name
+Having TrackId = 12
+
+4.
+Retrieve a list with the managers last name, and the last name of the employees who report to him or her.
+
+Select B.LastName AS Managers,A.LastName AS EmpName
+From Employees A,Employees B
+Where A.ReportsTo = B.EmployeeId
+Order By Managers 
+
+5.
+Find the name and ID of the artists who do not have albums.
+
+Select ArtistId, Name
+From Artists
+Where ArtistId Not IN (Select ArtistId From Albums)
+
+6.
+Use a UNION to create a list of all the employee's and customer's first names and last names ordered by the last name in descending order.
+After running the query described above, determine what is the last name of the 6th record? Enter it below. Remember to order things in descending order to be sure to get the correct answer.
+
+Select FirstName, LastName
+From Employees
+UNION
+Select FirstName, LastName
+From Customers
+Order By LastName DESC
+
+7.
+See if there are any customers who have a different city listed in their billing city versus their customer city.
+
+Select City From Customers
+Where City NOT IN (Select BillingCity From Invoices)
